@@ -1,0 +1,17 @@
+extends layout 
+
+
+block content
+  .container
+    h1 Todo App
+    div
+        span Welcome #{username} 
+        a(href='/logout') Logout 
+    form(role='form', action='add-task', method='post')
+      .form-group
+        label(for="taks") Task 
+        input.form-control(type="text", id='task', name='task', placeholder='Enter a task')
+      button.btn.btn-success(type='submit') Add 
+    ul
+      each task in tasks 
+        li= task
