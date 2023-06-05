@@ -4,14 +4,16 @@ extends layout
 block content
   .container
     h1 Todo App
-    div
+    div.mb-3
         span Welcome #{username} 
         a(href='/logout') Logout 
-    form(role='form', action='add-task', method='post')
-      .form-group
-        label(for="taks") Task 
+    form(role='form', action='/todo/add', method='post')
+      .input-group.mb-3
         input.form-control(type="text", id='task', name='task', placeholder='Enter a task')
-      button.btn.btn-success(type='submit') Add 
-    ul
-      each task in tasks 
-        li= task
+        button.btn.btn-success(type='submit') Add 
+    .card.mt-3.p-3
+      if tasks.length !== 0
+        each task in tasks 
+          div.form-check
+            input.form-check-input(type="checkbox" value=task.task id=task.id)
+            label.form-check-label(for=task)= task.task

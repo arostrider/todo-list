@@ -30,6 +30,7 @@ module.exports = (db) => {
 
         // Set the userId in the session upon successful login
         req.session.userId = row.id;
+        req.session.activeUser = row.username;
 
         // User found and valid credentials
         const user = encodeURIComponent(row.username)

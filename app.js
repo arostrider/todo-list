@@ -18,14 +18,12 @@ app.use(
   })
 );
 
-const checkAuthentication  = (req, res, next) => {
+const checkAuthentication  = (req, res, next) => {  
   if(!req.session.userId) {
     return res.redirect('/login');
   }
 
-  const userId = req.session.userId;
-
-  db.get('SELECT * FROM users WHERE id = ?', [userId], (err, row) => {
+  db.get('SELECT * FROM users WHERE id = ?', [req.session.userId], (err, row) => {
     if(err || !row) {
       return res.redirect('/login');
     }
@@ -34,7 +32,7 @@ const checkAuthentication  = (req, res, next) => {
 }
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users')(db);
 const loginRouter = require('./routes/login')(db);
 const registerRouter = require('./routes/register')(db);
 const todoRoute = require('./routes/todo');
@@ -59,7 +57,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', checkAuthentication, usersRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/todo', checkAuthentication, todoRoute);

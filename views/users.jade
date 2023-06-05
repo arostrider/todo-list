@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  .container
+   h1 List Of Users 
+  div
+    span Welcome #{activeUser} 
+    a(href='/logout') Logout 
+  ul.list-group
+    if users.length !== 0
+      each user in users 
+        li.list-group-item= user.username
